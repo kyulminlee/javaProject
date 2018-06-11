@@ -1,0 +1,94 @@
+////////////WMQLib
+/*		
+	public void put(TextMessage JmsSndMsg) throws Exception{		
+		JmsSndMsg = session.createTextMessage();		
+		JmsSndMsg.setText("한글  !! mesge get !! ");
+		
+		try {
+			producer.send(JmsSndMsg);
+			System.out.println("JmsSndMsg을 보냈습니다.");
+			MQQM.commit();			//put 처리 성공시 commit 
+			
+		} catch (Exception e){		//put 처리 실패시 continue 여부에 따라 rollback or err Q 
+			//e.printStackTrace();
+			//continue?? y , n 			
+		}
+			return;	
+			
+	}
+	
+	public void get() throws Exception{
+		while (true) {
+			Message msg = consumer.receive(1);
+			if (msg != null) {
+				if (msg instanceof TextMessage) {
+					TextMessage JmsRcvMsg = (TextMessage) msg;
+					System.out.println("읽어온 메시지:" + JmsRcvMsg.getText());
+				}
+			} else{
+				System.out.println("더이상 큐안에  메시지가 없습니다.");
+			}
+				break;
+		}
+		
+	}		2012.09.18 화 이전 소스 */
+	
+	
+	/* 09.20 소스
+	
+		public ArrayList get() throws Exception{				
+			while (true) {
+				Message msg = consumer.receive(1);		//해당 큐의 msg 가져와서 msg만듬
+				
+				if (msg != null) {	
+					if (msg instanceof TextMessage) {
+						TextMessage tmpmsg = (TextMessage) msg;
+						arr.add(tmpmsg.getText());
+						System.out.println("### Get Message: " + tmpmsg.getText());
+					}
+	
+				} else
+				break;
+			}
+			
+		return arr;
+	}
+
+	public void Adminget() throws Exception{
+		System.out.println();
+	}
+	
+	public void put(ArrayList arr) throws Exception {
+		TextMessage message = session.createTextMessage();
+
+			if (arr.size() > 0 && arr != null) {
+				for (int i = 0; i < arr.size(); i++) {
+					message.setText(String.valueOf(arr.get(i)));
+					System.out.println("### Put Message: " + String.valueOf(arr.get(i)));
+					producer.send(message);
+					System.out.println("JmsSndMsg을 보냈습니다.");
+					MQQM.commit();			//put 처리 성공시 commit 
+				}
+			}else {
+					System.out.println("put 실패 - ErrQ로 메시지 빠집니다.");
+					ErrProducer.send(message);
+			}
+	}   */
+	
+	
+	
+	
+////////////WMQLib	  
+
+	public void msgSend(String msg) throws Exception{
+		try{
+			JmsSndMsg.setText(msg);
+			producer.send(JmsSndMsg);
+			session.commit();					//msg commit
+			System.out.println("msg를 성공적으로 Q에 Put하였습니다.");
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+	}
+	
+이렇게 쓰면 비조작 session 에러가 남...
